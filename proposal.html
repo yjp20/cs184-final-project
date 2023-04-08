@@ -1,0 +1,110 @@
+<head>
+	<style>
+		body {
+			background-color: #f9f9f9;
+			padding: 32px;
+			width: 800px;
+			margin: auto;
+			text-align: left;
+			font-weight: 400;
+			font-family: "Inter", sans-serif;
+			color: #121212;
+		}
+		img {
+			display: block;
+			margin: auto;
+			max-width: 500px;
+			box-shadow: 0 1px 3px #00000020;
+		}
+		code {
+			display: inline-block;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+			padding: 0 3px;
+			background-color: #eee;
+		}
+		h1,
+		h2,
+		h3 {
+			margin-top: 3rem;
+		}
+		h2 + h3 {
+			margin-top: 1rem;
+		}
+		h1,
+		h2,
+		h3,
+		h4 {
+			font-family: "Inter", sans-serif;
+			font-weight: 700;
+		}
+
+		td {
+			width: 50%;
+		}
+
+		figcaption {
+			font-size: 0.875rem;
+			margin-top: 0.25rem;
+			margin-bottom: 0.5rem;
+		}
+	</style>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>CS 184 Final Project Proposal</title>
+</head>
+
+<body>
+	<header>
+		<h1>Final Project Proposal: Raymarching with SDFs</h1>
+		<h2>Team Name: TBD</h2>
+		<p>Xavier Plourde, Eric Zhao, Kenneth Shyle, Young-Jin Park</p>
+	</header>
+
+	<p>
+		We want to create a basic raymarching engine which can handle some Signed
+		Distance Fields as scenes. Compared to raytracing we covered in class, ray
+		marching is less reliant on triangular meshes and instead render based on
+		mathematical equations which makes it a very powerful tool for procedurally
+		generated art
+	</p>
+
+	<p>
+		We plan to add more complex lighting effects and BSDFs parts to the engine,
+		or even finding novel ways to optimize the raymarcher (datastructures,
+		shaders) depending on how well implementing a ray marcher goes.
+	</p>
+
+	<p>
+		Finally, we will create an art piece to show off the capabilities of this
+		engine, much like as seen in this video:
+	</p>
+
+	<iframe
+		width="560"
+		height="315"
+		src="https://www.youtube.com/embed/BFld4EBO2RE"
+		title="YouTube video player"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		allowfullscreen
+	></iframe>
+
+	<p>
+		To implement the raymarcher itself, we found a couple of resources such as
+		<a href="https://digitalfreepen.com/2017/06/23/fast-mostly-consistent.html"
+			>this blog article</a
+		>
+		and this video below
+	</p>
+
+	<iframe
+		width="560"
+		height="315"
+		src="https://www.youtube.com/embed/Cp5WWtMoeKg"
+		title="YouTube video player"
+		frameborder="0"
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		allowfullscreen
+	></iframe>
+</body>
