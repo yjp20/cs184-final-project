@@ -1,0 +1,242 @@
+<head>
+	<style>
+		body {
+			background-color: #f9f9f9;
+			display: flex;
+			margin: auto;
+			font-weight: 400;
+			font-family: "Inter", sans-serif;
+			color: #121212;
+			justify-content: center;
+			align-items: stretch;
+		}
+
+		.label {
+			font-weight: bold;
+			margin: 0;
+		}
+
+		aside {
+			position: relative;
+			padding: 16px;
+			width: 125px;
+		}
+
+		aside > nav {
+			font-size: 0.875em;
+			position: sticky;
+			top: 16px;
+		}
+
+		aside ul {
+			margin: 0;
+			list-style: none;
+			padding-left: 8px;
+		}
+
+		aside ul ul {
+		}
+
+
+		main {
+			height: max-content;
+			padding: 16px;
+			width: 800px;
+			text-align: left;
+		}
+		img {
+			display: block;
+			margin: auto;
+			max-width: 500px;
+			box-shadow: 0 1px 3px #00000020;
+		}
+		code {
+			display: inline-block;
+			border-radius: 4px;
+			border: 1px solid #ccc;
+			padding: 0 3px;
+			background-color: #eee;
+		}
+		h1,
+		h2,
+		h3 {
+			margin-top: 3rem;
+		}
+		h2 + h3 {
+			margin-top: 1rem;
+		}
+		h1,
+		h2,
+		h3,
+		h4 {
+			font-family: "Inter", sans-serif;
+			font-weight: 700;
+		}
+
+		td {
+			width: 50%;
+		}
+
+		figcaption {
+			font-size: 0.875rem;
+			margin-top: 0.25rem;
+			margin-bottom: 0.5rem;
+		}
+	</style>
+
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>CS 184 Final Project Proposal</title>
+</head>
+
+<body>
+	<aside>
+		<nav>
+			<p class="label">Table of Contents</p>
+			<ul>
+				<li>
+					<a href="#proposal">Proposal</a>
+					<ul>
+						<li><a href="#timeline">Timeline</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#milestone">Milestone</a>
+					<ul>
+						<li><a href="#milestone-accomplishments">Accomplishments</a></li>
+						<li><a href="#milestone-timeline">Timeline</a></li>
+						<li><a href="#milestone-presentation">Presentation</a></li>
+						<li><a href="#milestone-video">Video</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#final-report">Final Report</a>
+				</li>
+			</ul>
+		</nav>
+	</aside>
+	<main>
+		<header>
+			<h1 style="margin-top: 0">Final Project: Raymarching with SDFs</h1>
+			<p>Team Name: TBD</p>
+			<p>Xavier Plourde, Eric Zhao, Kenneth Shyle, Young-Jin Park</p>
+		</header>
+
+		<h1 id="proposal">Proposal</h1>
+
+		<p>
+			We want to create a basic raymarching engine which can handle some Signed
+			Distance Fields as scenes. Compared to raytracing we covered in class, ray
+			marching is less reliant on triangular meshes and instead render based on
+			mathematical equations which makes it a very powerful tool for
+			procedurally generated art
+		</p>
+
+		<p>
+			We plan to add more complex lighting effects and BSDFs parts to the
+			engine, or even finding novel ways to optimize the raymarcher
+			(datastructures, shaders) depending on how well implementing a ray marcher
+			goes.
+		</p>
+
+		<p>
+			Finally, we will create an art piece to show off the capabilities of this
+			engine, much like as seen in this video:
+		</p>
+
+		<iframe
+			width="560"
+			height="315"
+			src="https://www.youtube.com/embed/BFld4EBO2RE"
+			title="YouTube video player"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+			allowfullscreen
+		></iframe>
+
+		<p>
+			To implement the raymarcher itself, we found a couple of resources such as
+			<a
+				href="https://digitalfreepen.com/2017/06/23/fast-mostly-consistent.html"
+				>this blog article</a
+			>
+			and this video below
+		</p>
+
+		<iframe
+			width="560"
+			height="315"
+			src="https://www.youtube.com/embed/Cp5WWtMoeKg"
+			title="YouTube video player"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+			allowfullscreen
+		></iframe>
+
+		<h2 id="timeline">Timeline</h2>
+		<p>Apr. 21th: Basic raymarching intersection (Young-Jin)</p>
+		<p>Apr. 24th: Colors, BSDFs (Xavier)</p>
+		<p>Apr. 27th: Optimizations</p>
+		<p>May 1st: Artpiece</p>
+
+		<h1 id="milestone">Milestone</h1>
+		<a href="https://www.shadertoy.com/view/mltGDr">https://www.shadertoy.com/view/mltGDr</a>
+
+		<img src="./images/shadertoy.png" style="max-width: 100%">
+
+		<p>So far, we have used the Shadertoy website to develop a GLSL shader program to create a parallelized, real time raymarching engine. We attempted an implementation of this by modifying the pathtracer code, but we realized that that would take longer than we'd like compared to using a much simpler platform to experiment, while being also significantly less performant. Shadertoy exposes a really simple interface and a very fast dev-loop, with compilation being nearly instantaneous and the results being apparent immediately, with relatively simple modes of interaction. This helped immensely in implementing our engine quickly, despite the fact that GLSL is arguably a less ergonomic language to develop in than C++.</p>
+
+		<h2 id="milestone-accomplishments">Accomplishments</h2>
+
+		<img src="./images/scene1-normal.png">
+		<figcaption align="center">Normal rendering of scene1</figcaption>
+
+		<p>Our raymarcher is made of a couple of moving parts. First is the SDF, or signed distance function. This function maps some point in 3D space to some value. We consider there to be a surface where ever the value of a certain point is equal to zero. We defined a couple of these for primitives such as circles and boxes, as well as some combinators. For example, taking the min of a couple of sdfs is equivalent to making an SDF that is the 'merged' SDF of the individual components, kind of like adding shapes together. It's a key component in how we build scenes.</p>
+
+		<p>Interestingly, taking the max does the opposite, and takes the intersection of two objects. You can even take negative of an object to carve out a hole of that shape, which we do in scene3 to create a box with one side open like that in colorbox of pathtracer.</p>
+
+		<img src="./images/raymarching.png">
+		<figcaption align="center">Image taken from Sebastian Lague's Ray Marching video</figcaption>
+
+		<p>The second part is the actual raymarching algorithm itself, which is shockingly simple. To find an intersection, we calculate the value of the SDF of the current point in the ray. This gives us the minimum distance that a boundary is at, so we're free to travel that much forward. We can then just move forward by that amount and repeat the process, until we're at a point which is very close to zero, in which case we hit a surface.</p>
+
+		<img src="./images/scene1.png">
+		<figcaption align="center">Phong rendering of scene1</figcaption>
+
+		<img src="./images/scene3.png">
+		<figcaption align="center">BSDF 1-bounce rendering of scene3</figcaption>
+
+		<p>Finally, we have the different lighting systems, such and Phong, BSDFs with one bounce, and BSDFs with mutlibounce raytracing. We also implemented a buffer layer which collects data over multiple frames, which reduces noise significantly for scene3. Much of this is very similar to what we implemented in pathtracer.</p>
+
+		<img src="./images/scene2.png">
+		<figcaption align="center">Phong rendering of scene2</figcaption>
+
+		<p>What we found really interesting and powerful was applications like softmerge, in which we were able to display much more organic shapes very easily. An image like the one above would be far more difficult to create in a meshed-based representation of the scene, involving a lot of geometry and ingenuity, but it's trivial to do in SDFs in a manner that's far more robust as well.<p>
+
+		<img src="./images/scenemandlebrot.png">
+		<figcaption align="center">Phong rendering of scenemandlebrot</figcaption>
+
+		<p>It gets even crazier when we talk about rendering this like fractals. This rendering of the mandlebrot set would be incredibly difficult to do without SDFs.
+
+		<h2 id="milestone-timeline">Timeline</h2>
+		<p>After our work, we decided that it was probably not hugely important to implement optimizations, and instead explore more into what makes raymarching and SDFs so powerful. This involves creating creative scenes with math, implementing more shaders and art primitives for interseting visual effects. Thankfully, we're not behind schedule, and got most of what we wanted to get done at this point finished.</p>
+
+		<p>Apr. 21th: Basic raymarching intersection (Young-Jin)</p>
+		<p>Apr. 24th: Colors, BSDFs (Xavier)</p>
+		<p>Apr. 27th: Explorations</p>
+		<p>May 1st: Artpiece</p>
+
+		<h2 id="milestone-presentation">Presentation</h2>
+
+		<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSBo4z2teGJ7RJwBCO2iVcYttrLiiP8dLLHMBgvz23c6b3Pj5yr2E0o_eVH2ZaASMDDXRRHkncMD7z5/embed?start=false&loop=false&delayms=60000" frameborder="0" width="800" height="500" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+		<h2 id="milestone-video">Video</h2>
+
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/xLE7Pvitaws" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+		<h1 id="final-report">Final Report</h1>
+
+
+
+
+	</main>
+</body>
