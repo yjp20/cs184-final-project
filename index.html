@@ -234,80 +234,89 @@
 		<iframe width="560" height="315" src="https://www.youtube.com/embed/xLE7Pvitaws" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 		<h1 id="final-report">Final Report</h1>
+		<h2 id="abstract">Abstract</h2>
+		Our group worked together to generate images through the use of ray-marching and signed distance functions to create procedurally generated images. Using
+		these techniques we created several artpiecees that would be difficult to generate through standard ray tracing and meshes including the merging of moving 
+		objects alongside a complicated mountainous landscape. The landscape was generated through the recursive stacking of perlin noise in a fourrier series like manner
+		to create a realistic looking landscape.
 
-		<h2 id="final-artpiece">Artpiece</h2>
-		<h2 id="final-artpiece">Artpiece</h2>
-		<p>
-		We wanted to generate an image that would show off the image generating potential of ray-marching we wanted to generate a complicated terrain
-		with numerous crevices and hills that would be difficult to raymarch due to its scale and complexity. This is easily achieved using sdf's as we simply
-		need to provide the distance to the terrain which is trivial when we generate the terrain proceduraly using perlin noise.
-		</p>
-		<p>
-		The terrain generation is done by layering multiple layers of 3D perlin noise on top of each other in a fourrier fashion where the process 
-		involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them 
-		in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain. 
-		</p> 	
+		<h2 id="approach">Techinal Approach</h2>
+		<h4>Ray Marching:</h4>
+		<h4>BSDF's:</h4>
+		<hr>
+		<h4>Mountain Artpiece:</h4>
+		<b>Approach:</b> 
+			<p>
+			We wanted to generate an image that would show off the image generating potential of ray-marching we wanted to generate a complicated terrain
+			with numerous crevices and hills that would be difficult to raymarch due to its scale and complexity. This is easily achieved using sdf's as we simply
+			need to provide the distance to the terrain which is trivial when we generate the terrain proceduraly using perlin noise.
+			</p>
+			<p>
+			The terrain generation is done by layering multiple layers of 3D perlin noise on top of each other in a fourrier fashion where the process 
+			involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them 
+			in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain. 
+			</p> 	
 		<p>
 		The terrain generation process can be seen below:
 		</p> 	
-			<div align="middle" style="max-width: 100%">
+		<div align="middle" style="max-width: 100%">
 		    <table width = "800px" align="center">
 			<tr align="center">
-			<td>
-			    <img src="images/perlin1.exr" align="middle" width="200px"/>
-			    <figcaption>1 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			    <img src="images/perlin2.exr" align="middle" width="200px"/>
-			    <figcaption>2 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			    <img src="images/perlin3.exr" align="middle" width="200px"/>
-			    <figcaption>3 Layers of Perlin Noise</figcaption>
-			</td>
+			    <td>
+				<img src="images/perlin1.png" align="middle" width="200px"/>
+				<figcaption>1 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin2.png" align="middle" width="200px"/>
+				<figcaption>2 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin3.png" align="middle" width="200px"/>
+				<figcaption>3 Layers of Perlin Noise</figcaption>
+			    </td>
 			</tr>
-		      <tr align="center">
-			<td>
-			    <img src="images/perlin4.exr" align="middle" width="200px"/>
-			    <figcaption>4 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			    <img src="images/perlin5.exr" align="middle" width="200px"/>
-			    <figcaption>5 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			    <img src="images/perlin6.exr" align="middle" width="200px"/>
-			    <figcaption>6 Layers of Perlin Noise</figcaption>
-			</td>
-		      </tr>
-		      <tr align="center">
-			<td>
-			  <img src="images/perlin7.exr" align="middle" width="200px"/>
-			  <figcaption>7 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			  <img src="images/perlin8.exr" align="middle" width="200px"/>
-			  <figcaption>8 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			  <img src="images/perlin9.exr" align="middle" width="200px"/>
-			  <figcaption>9 Layers of Perlin Noise</figcaption>
-			</td>
-		      </tr>
-		      <tr align="center">
-			<td>
-			    <img src="images/perlin10.exr" align="middle" width="200px"/>
-			    <figcaption>10 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			    <img src="images/perlin11.exr" align="middle" width="200px"/>
-			    <figcaption>11 Layers of Perlin Noise</figcaption>
-			</td>
-			<td>
-			    <img src="images/perlin12.exr" align="middle" width="200px"/>
-			    <figcaption>12 Layers of Perlin Noise</figcaption>
-			</td>
-		      </tr>
+			<tr align="center">
+			    <td>
+				<img src="images/perlin4.png" align="middle" width="200px"/>
+				<figcaption>4 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin5.png" align="middle" width="200px"/>
+				<figcaption>5 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin6.png" align="middle" width="200px"/>
+				<figcaption>6 Layers of Perlin Noise</figcaption>
+			    </td>
+			</tr>
+			<tr align="center">
+			    <td>
+				<img src="images/perlin7.png" align="middle" width="200px"/>
+				<figcaption>7 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin8.png" align="middle" width="200px"/>
+				<figcaption>8 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin9.png" align="middle" width="200px"/>
+				<figcaption>9 Layers of Perlin Noise</figcaption>
+			    </td>
+			</tr>
+			<tr align="center">
+			    <td>
+				<img src="images/perlin10.png" align="middle" width="200px"/>
+				<figcaption>10 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin11.png" align="middle" width="200px"/>
+				<figcaption>11 Layers of Perlin Noise</figcaption>
+			    </td>
+			    <td>
+				<img src="images/perlin12.png" align="middle" width="200px"/>
+				<figcaption>12 Layers of Perlin Noise</figcaption>
+			    </td>
+			</tr>
 		    </table>
 		</div>
 		<p>
@@ -316,22 +325,48 @@
 		by utilizing the distance from the landscape to the camera position to bleed the color of the light with the actual "real" color of the landscape to give the impression of 
 		distance to the scene.
 		</p>
-		<img src="./images/atmosphere.exr">
-			<figcaption align="center">With atmosphere blending</figcaption>
-		<img src="./images/no_atmosphere.exr">
-			<figcaption align="center">Without atmosphere blending</figcaption>
+		<img src="./images/atmosphere.png">
+		<figcaption align="center">With atmosphere blending</figcaption>
+		<img src="./images/no_atmosphere.png">
+		<figcaption align="center">Without atmosphere blending</figcaption>
 		<p>
 		As an extension we intended to add procedurally generated clouds and trees as well - with clouds being implemented in a similar way to the mountains but simply
 		with a different scale and trees being implemented with elipsoids with perlin noise on top of them - however, they strained the renderer too much and thus we omitted these additions.
 		We also did not combine the artpiece with more complicated bsdfs for the same reason.
-		</p> 
-		
+		</p> 	
+
+		<b>Problems:</b>
 		<p>
-		The terrain generation is done by layering multiple layers of 3D perlin noise on top of each other in a fourrier fashion where the process 
-		involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them 
-		in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain. 
+		The first issue that we encountered was the fact that we couldn't create a perlin noise layer all at once and had to determine an efficient way to calculate the
+		height of he surface at any point efficiently. As such we decided to use a grid defining the point within space as anchor points to determine the part of the perlin surface
+		we resided on. Then to create the multiple layers, instead of scaling the surface, we scaled the anchor points instead in a "reverse" fashion to backwards calculate the height
+		of the layer we wished to calculate - ie. for layer 2 we took the point rotated it in space and scaled it up by 2 before calculating their anchor points.
+		<br>
+		We also had to determine a fine line for the maximum distance for the ray march as otherwise very few of the mountains would be rendered at one time whilst a 
+		large tmax meant that the rendering took to long to process. In addition, we had to numerically calculate the normal for the surface as calculating the derivative 
+		as it would take too long to calculate it analytically - We used the tetrahedron-based normal estimation as seen here: https://iquilezles.org/articles/normalsSDF/
 		</p> 
-		
+		<b>Lesons Learned:</b>
+		Creating convincing images does not need to be overly complicated as the finer details are hard to spot immediately and often approximations such as perlin noise 
+		for the terrain and sky often look convincing enough to pass at the rendering resolution.
+
+
+			<h2 id="final-artpiece">Artpiece</h2>
+		<h4>Mountainous Landscape</h4>
+		<img src="./images/atmosphere.png">
+
+		<h2 id="contributinos">Contributions</h2>
+		<p>
+		<b>Xaview Plourde</b>:
+		<br><br>
+		<b>Young-Jin Park</b>:
+		<br><br>
+		<b>Eric Zhao</b>:
+		<br><br>
+		<b>Kenneth Shyle</b>: Implemented the bulk of the final artpiece relating to the mountainous scene. Created perlin noise sdf and terrain generation process. Implemented
+		optimizations to the scene to improve realism including atmospheric blending and normal dependent color blending for mountainside. 
+		</p>
+
 		<p>This is a budget galaxy scene that we created. The scene is a distance function used in ray marching algorithms for rendering 3D scenes. 
 			Several parameters are used to calculate the positions and movements of several orbiting balls in the scene. 
 			The position of each orbiting ball is calculated based on the current time and its radius and speed. The distance from the current position to 
@@ -379,6 +414,6 @@
 			  <figcaption align="middle">ball spiking as time passes more</figcaption>
 			</tr>
 		    </table>
-		   </div>
+		   </div>	
 	</main>
 </body>
