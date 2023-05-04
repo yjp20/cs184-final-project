@@ -357,7 +357,12 @@
 			The position of each orbiting ball is calculated based on the current time and its radius and speed. The distance from the current position to 
 			each orbiting ball is then calculated by taking the length of the vector between the current position and the position of the ball. 
 			We also have a stationary ball in the center to act as the sun. We choose to emit the light from the center of ball to create shading purposes. 
-			At last, the distances to all the balls are combined using the "min2" function to return the minimum distance and the index of the closest ball. </p>
+			At last, the distances to all the balls are combined using the "min2" function to return the minimum distance and the index of the closest ball.</p
+			
+		<p>We imitate sunlight lighting and shading by getting the material properties of the object, then defining the light sources at the origin and 
+			calculating distance from the light source to the current position using dot product. The function then calculates the normal vector at the current position. 
+			We then calculates the ambient, diffuse, and specular lighting contributions from the source, using the material properties, the normal vector, and the direction vector.
+			Lastly, we sum all the lighting contributions to display the effect.</p>
 			<div align="center">
 			    <table style="width=100%">
 				<tr>
@@ -404,11 +409,11 @@
 		During implementation, we were trying out different distance equations to find one that seem most suitable for orbit. 
 		<br>
 		Another problem that we ran into was that since we set the light coming from the center of sun. The sun itself was not bright at all since the ray 
-			was coming out from the inside of the sphere, so we decided to add bright multi-layers on top of the sphere to make it seem more like a sun.
+			was coming out from the inside of the sphere, so we decided to add some additional displacement mapping to the object using trigonometric functions. 
+			The displacement is added to the lighting calculations to create a bump-mapped effect to make it seem more like a sun.
 		</p> 
 		<b>Lesons Learned:</b>
-		We learned that how convenient it can handle implicit surfaces, 
-		which are defined by mathematical equations rather than a specific set of vertices, which are difficult to represent using traditional methods.
+		We learned that how convenient it can handle implicit surfaces that are defined by mathematical equations rather than a specific set of vertices, which are difficult to represent using traditional methods.
 		
 		
 		<h2 id="final-artpiece">Artpiece</h2>
