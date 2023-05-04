@@ -255,13 +255,13 @@
 		involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them 
 		in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain. 
 		</p> 
-		<p>
-		The terrain generation is done by layering multiple layers of 3D perlin noise on top of each other in a fourrier fashion where the process 
-		involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them 
-		in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain. 
-		</p> 
 		
-		<p>This is a budget galaxy scene that we created. The scene is a distance function used in ray marching algorithms for rendering 3D scenes. Several parameters are used to calculate the positions and movements of several orbiting balls in the scene. The position of each orbiting ball is calculated based on the current time and its radius and speed. The distance from the current position to each orbiting ball is then calculated by taking the length of the vector between the current position and the position of the ball. We also have a stationary ball in the center to act as the sun. We choose to emit the light from the center of ball to create shading purposes. At last, the distances to all the balls are combined using the "min2" function to return the minimum distance and the index of the closest ball.</p>
+		<p>This is a budget galaxy scene that we created. The scene is a distance function used in ray marching algorithms for rendering 3D scenes. 
+			Several parameters are used to calculate the positions and movements of several orbiting balls in the scene. 
+			The position of each orbiting ball is calculated based on the current time and its radius and speed. The distance from the current position to 
+			each orbiting ball is then calculated by taking the length of the vector between the current position and the position of the ball. 
+			We also have a stationary ball in the center to act as the sun. We choose to emit the light from the center of ball to create shading purposes. 
+			At last, the distances to all the balls are combined using the "min2" function to return the minimum distance and the index of the closest ball.</p>
 		<div align="center">
 		    <table style="width=100%">
 			<tr>
@@ -281,6 +281,9 @@
 			</tr>
 		    </table>
 		   </div>
-		<p>This is a stimulation of a ball spiking as time passes kind of like a virus. Similar to the previous point, the reason why raymarching might be better for this particular scene is that it involves complex mathematical functions, such as sine and cosine functions, to generate the displacement effect. With raymarching, it is easier to integrate these functions into the distance estimation equation, allowing for more efficient rendering. </p>
+		<p>This is a stimulation of a ball spiking as time passes kind of like a virus. Similar to the previous point, 
+			the reason why raymarching might be better for this particular scene is that it involves complex mathematical functions, 
+			such as sine and cosine functions, to generate the displacement effect. With raymarching, it is easier to integrate these functions 
+			into the distance estimation equation, allowing for more efficient rendering. </p>
 	</main>
 </body>
