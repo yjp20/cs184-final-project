@@ -235,8 +235,19 @@
 
 		<h1 id="final-report">Final Report</h1>
 
-
-
-
+		<h2 id="final-artpiece">Artpiece</h2>
+		<p>
+		We wanted to generate an image that would show off the image generating potential of ray-marching we wanted to generate a complicated terrain
+		with numerous crevices and hills that would be difficult to raymarch due to its scale and complexity. This is easily achieved using sdf's as we simply
+		need to provide the distance to the terrain which is trivial when we generate the terrain proceduraly using perlin noise.
+		</p>
+		<br><br>
+		<p>
+		The terrain generation is done by layering multiple layers of 3D perlin noise on top of each other in a fourrier fashion where the process 
+		involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them 
+		in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain. 
+		</p> 	
+		<table>
+		</table>
 	</main>
 </body>
