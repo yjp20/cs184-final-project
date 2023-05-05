@@ -49,7 +49,8 @@
 			width: 800px;
 			text-align: left;
 		}
-		img {
+		img,
+		video {
 			display: block;
 			margin: auto;
 			max-width: 500px;
@@ -75,7 +76,6 @@
 		h4 {
 			margin: 1em 0;
 		}
-
 
 		h1,
 		h2,
@@ -110,7 +110,8 @@
 					<a href="#final-report">Final Report</a>
 					<ul>
 						<li><a href="#abstract">Abstract</a></li>
-						<li><a href="#technical">Technical approach</a>
+						<li>
+							<a href="#technical">Technical approach</a>
 							<ul>
 								<li><a href="#shadertoy">Shadertoy</a></li>
 								<li><a href="#engine">SDF and Intersections</a></li>
@@ -123,9 +124,11 @@
 							<ul>
 								<li><a href="#result-mandlebulb">Mandlebulb</a></li>
 								<li><a href="#result-softmerge">Soft-merge</a></li>
-								<li><a href="#result-procedural-terrain">Procedural Terrain</a></li>
+								<li>
+									<a href="#result-procedural-terrain">Procedural Terrain</a>
+								</li>
 								<li><a href="#result-viral">Viral ball</a></li>
-								<li><a href="#result-galaxy">Galaxy</a></li>
+								<li><a href="#result-solar">Solar System</a></li>
 							</ul>
 						</li>
 						<li><a href="#conclusions">Conclusions</a></li>
@@ -177,32 +180,31 @@
 		<img src="./images/shadertoy.png" />
 
 		<p>
-			We used the Shadertoy website to develop a GLSL shader program to create
-			a real time raymarching engine. We previously attempted an implementation
-			of this by modifying the pathtracer code, but we realized that that would
+			We used the Shadertoy website to develop a GLSL shader program to create a
+			real time raymarching engine. We previously attempted an implementation of
+			this by modifying the pathtracer code, but we realized that that would
 			take longer than we'd like compared to using a much simpler platform to
 			experiment, while being also significantly less performant. Shadertoy
 			exposes a really simple interface and a very fast dev-loop, with
 			compilation being nearly instantaneous and the results being apparent
 			immediately, with relatively simple modes of interaction. This helped
 			immensely in implementing our engine quickly, despite the fact that GLSL
-			is arguably a less ergonomic language to develop in than C++, and that we had
-			to reimplement some of the features of pathtracer.
+			is arguably a less ergonomic language to develop in than C++, and that we
+			had to reimplement some of the features of pathtracer.
 		</p>
 		<p>
 			One example of the kind of problems that we had to work through was poor
-			random number generation. Unlike in C++ code, shaders don't have access
-			to random bits. We tried a trig-based random number generation that was
-			not quite good enough, so we found a good hash-based generator that we
-			forward essentially everywhere and mutate for a source of entropy.
+			random number generation. Unlike in C++ code, shaders don't have access to
+			random bits. We tried a trig-based random number generation that was not
+			quite good enough, so we found a good hash-based generator that we forward
+			essentially everywhere and mutate for a source of entropy.
 		</p>
 
-		<p>
-		</p>
+		<p></p>
 
 		<h3 id="engine">SDF and Intersections</h3>
 
-		<img src="./images/sdf.png" width=200 />
+		<img src="./images/sdf.png" width="200" />
 		<figcaption align="center">
 			Image of a 2D circle SDF from Manning Publications
 		</figcaption>
@@ -240,43 +242,53 @@
 			the scene. This algorithm is shockingly simple: to find an intersection,
 			we calculate the value of the SDF of the current point in the ray. This
 			gives us the minimum distance that a boundary is at, so we're free to
-			travel that much forward. We can then just move forward by that amount
-			and repeat the process, until we're at a point which is very close to
-			zero, in which case we hit a surface.
+			travel that much forward. We can then just move forward by that amount and
+			repeat the process, until we're at a point which is very close to zero, in
+			which case we hit a surface.
 		</p>
 
 		<h3 id="rendering">Rendering</h3>
 
 		<h4>Phong</h4>
 
-		<table>
+		<table align="center">
 			<tr>
-				<td><img src="./images/scene1.png"></td>
-				<td><img src="./images/scene2.png"></td>
+				<td><img src="./images/scene1.png" /></td>
+				<td><img src="./images/scene2.png" /></td>
 			</tr>
 		</table>
 
-
-		<p>Implementing Phong was fairly simple, since it's something we've already
-		done a couple of times in class.</p>
+		<p>
+			Implementing Phong was fairly simple, since it's something we've already
+			done a couple of times in class.
+		</p>
 
 		<p>
 			One challenge is that we had to numerically calculate the normal for the
 			surface as calculating the derivative of the SDF analytically is
-			difficult. We used the tetrahedron based approach outlined here: <a
-				href="https://iquilezles.org/articles/normalsSDF/"
-			>https://iquilezles.org/articles/normalsSDF/</a>
+			difficult. We used the tetrahedron based approach outlined here:
+			<a href="https://iquilezles.org/articles/normalsSDF/"
+				>https://iquilezles.org/articles/normalsSDF/</a
+			>
 		</p>
 
-		<p>Another challenge was displaying multiple materials. SDFs don't
-		inherently return any information about materials, which make it difficult
-		to create colorful images. To get around this, we made SDFs return a
-		<code>vec2</code> instead, where the first value is the distance value, and
-		the second value is the index of the material in our table.</p>
+		<p>
+			Another challenge was displaying multiple materials. SDFs don't inherently
+			return any information about materials, which make it difficult to create
+			colorful images. To get around this, we made SDFs return a
+			<code>vec2</code> instead, where the first value is the distance value,
+			and the second value is the index of the material in our table.
+		</p>
 
 		<h4>1-bounce BSDF</h4>
 
-		<h4>n-bounce BSDF</h4>
+		<img src="./images/bsdf1.png" />
+		<figcaption align="center">1-bounce with BSDF</figcaption>
+
+		<h4>N-bounce BSDF</h4>
+
+		<img src="./images/bsdfn.png" />
+		<figcaption align="center">N-bounce with BSDF</figcaption>
 
 		<h3 id="procedural-terrain">Procedural Terrain</h3>
 
@@ -285,8 +297,8 @@
 			noise on top of each other in a fourier fashion where the process involves
 			taking on layer of perlin noise in 3D, rescaling its domain by a factor of
 			2 and its range by a factor of 1/2 and combining them in a recursive
-			fashion. Note that we also rotate the layers by a fixed amount to create
-			a sense of randomness found in real terrain.
+			fashion. Note that we also rotate the layers by a fixed amount to create a
+			sense of randomness found in real terrain.
 		</p>
 
 		<p>The terrain generation process can be seen below:</p>
@@ -380,12 +392,49 @@
 
 		<h2 id="final-artpiece">Results</h2>
 		<h3 id="result-mandlebulb">Mandlebulb</h3>
+
+		<p>
+			The "mandlebulb" is a 3D version of the mandlebrot set. What you see below
+			is a mandlebulb rendered at various powers in real-time. Something like
+			this would be incredibly difficult to do with meshes, but it's a tractable
+			problem with SDFs.
+		</p>
+
+		<video
+			src="./images/mandlebulb.webm"
+			playsinline
+			autoplay
+			muted
+			loop
+		></video>
+
 		<h3 id="result-softmerge">Softmerge</h3>
+
+		<p>
+			This is a real-time render of various balls intersecting and "softmerging"
+			with each other which is equivalent to just taking the exponent of each
+			SDF, adding them together, then taking their log. As you can see it
+			creates seamless shapes with ease, but doing something like this with
+			meshes would be incredibly difficult to do robustly.
+		</p>
+
+		<video src="./images/spheres.webm" playsinline autoplay muted loop></video>
+
 		<h3 id="result-multibounce">Multibounce BSDF</h3>
+
+		<p>See <a href="#rendering">here</a> for a description of this artpiece.</p>
+
+		<img src="./images/bsdf1.png" />
+		<figcaption align="center">1-bounce with BSDF</figcaption>
+		<img src="./images/bsdfn.png" />
+		<figcaption align="center">N-bounce with BSDF</figcaption>
+
 		<h3 id="result-procedural-terrain">Procedural Mountain Terrain</h3>
 
-		<p>See <a href="#procedural-terrain">here</a> for a description of this
-		artpiece.</p>
+		<p>
+			See <a href="#procedural-terrain">here</a> for a description of this
+			artpiece.
+		</p>
 
 		<img src="./images/atmosphere.png" />
 
@@ -393,15 +442,28 @@
 
 		<p>
 			This is a stimulation of a ball spiking as time passes kind of like a
-			virus. We used simple trig operations to generate the displacement
-			effect. With SDFs, it was super simple to describe these displacements
-			and even animate them, but this would be quite challenging to do with
-			meshes in a fast manner.
+			virus. We used simple trig operations to generate the displacement effect.
+			With SDFs, it was super simple to describe these displacements and even
+			animate them, but this would be quite challenging to do with meshes in a
+			fast manner.
 		</p>
 
-		<h3 id="result-galaxy">Galaxy</h3>
-		<img src="./images/galaxy1.png" />
+		<video src="./images/viral.webm" playsinline autoplay muted loop></video>
 
+		<h3 id="result-solar">Solar</h3>
+
+		<p>
+			This is a budget solar system scene that we created. It's a basic scene
+			showing how we could compose multiple objects together to create a solar
+			system.
+		</p>
+
+		<p>
+			We attempted to procedurally create a texture for the sun, but we couldn't
+			quite get it to look convincing and animate at the same time.
+		</p>
+
+		<img src="./images/galaxy1.png" />
 
 		<h2 id="conclusions">Conclusions</h2>
 
@@ -409,25 +471,45 @@
 
 		<h2 id="references">References</h2>
 		<ul>
-			<li><a href="https://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/" >Ray Marching and Signed Distance Functions</a></li>
-			<li><a href="https://www.youtube.com/watch?v=BFld4EBO2RE">Painting a Landscape with Maths</a></li>
-			<li><a href="https://www.youtube.com/watch?v=Cp5WWtMoeKg">Coding Adventure: Ray Marching</a></li>
-			<li><a href="https://digitalfreepen.com/2017/06/23/fast-mostly-consistent.html">Fast and mostly consistent distance field ray marching</a></li>
+			<li>
+				<a
+					href="https://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/"
+					>Ray Marching and Signed Distance Functions</a
+				>
+			</li>
+			<li>
+				<a href="https://www.youtube.com/watch?v=BFld4EBO2RE"
+					>Painting a Landscape with Maths</a
+				>
+			</li>
+			<li>
+				<a href="https://www.youtube.com/watch?v=Cp5WWtMoeKg"
+					>Coding Adventure: Ray Marching</a
+				>
+			</li>
+			<li>
+				<a
+					href="https://digitalfreepen.com/2017/06/23/fast-mostly-consistent.html"
+					>Fast and mostly consistent distance field ray marching</a
+				>
+			</li>
 		</ul>
-
-
 
 		<h2 id="contributions">Contributions</h2>
 		<p>
-			<b>Xavier Plourde</b>: Implemented rendering of BSDFs, especially multi-bounce BSDFs.
+			<b>Xavier Plourde</b>: Implemented rendering of BSDFs, especially
+			multi-bounce BSDFs.
 		</p>
 
 		<p>
-			<b>Young-Jin Park</b>: Implemented most of the engine, including SDFs, raycasting, intersections, camera, materials, Phong, and some scenes.
+			<b>Young-Jin Park</b>: Implemented most of the engine, including SDFs,
+			raycasting, intersections, camera, materials, Phong, and some scenes.
 		</p>
 
 		<p>
-			<b>Eric Zhao</b>: Implemented the galaxy and spiking ball scene. Imitated sunlight lighting on rotating balls. Experimented with other small scenes that didn't make to presentation/wesbite.</p>
+			<b>Eric Zhao</b>: Implemented the galaxy and spiking ball scene. Imitated
+			sunlight lighting on rotating balls. Experimented with other small scenes
+			that didn't make to presentation/wesbite.
 		</p>
 
 		<p>
