@@ -467,7 +467,35 @@
 
 		<h2 id="conclusions">Conclusions</h2>
 
-		<p>LESSONS</p>
+		<p>
+			What did we learn? We believe that SDFs and raymarching are a fascinating
+			alternative to traditional ray tracing, which conventionally uses meshes
+			to define objects in a scene. SDFs enable the rendering of certain kinds
+			of objects, especially those with organic forms that are hard to capture
+			without large meshes and things with a high level of detail like terrain
+			and fractals.
+		</p>
+
+		<p>
+			There are also some cons. The first being that while SDFs can render
+			meshes, it's most likely going to be slower than a well optimized ray
+			tracing engine. The second is that SDFs can sometimes be tricky, and
+			require a lot more expertise to build the primitives rather than using one
+			main object (meshes and triangels) for pretty much everything.
+		</p>
+
+		<p>
+			Another potential problem is that ray marching is inherently less precise
+			than raytracing methods, just because of the way that the renderer handles
+			intersections. In our case, we found that specifically tuning parameters
+			for certain scenes helped a lot.
+		</p>
+
+		<p>
+			Overall, our main takeaway is that you can get quite a lot done with
+			raymarching with very few lines of code. The SDF model as a whole is
+			extremely elegant and powerful.
+		</p>
 
 		<h2 id="references">References</h2>
 		<ul>
