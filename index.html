@@ -284,10 +284,14 @@
 
 		<h4>1-bounce BSDF</h4>
 
+		<p>We implemented 1-bounce BDSF using a similar technique to the pathtracer in Project 3-1, except that for this we continued to use Shadertoy and raymarching. This proved to be fairly simple, since it was very similar to techniques already used in class.</p>
+
 		<img src="./images/bsdf1.png" />
 		<figcaption align="center">1-bounce with BSDF</figcaption>
 
 		<h4>N-bounce BSDF</h4>
+		
+		<p>As with 1-bounce, we implemented n-bounce BDSF in a similar manner to the pathtracer in Project 3-1. We implemented this using Russian roulette, terminating in half of the cases and continuing the bounce in the other half of the cases (this is not an ideal parameter, but was unfortunately the best we could do given limited computational resources). We ran into one challenge where Shadertoy doesn't allow recursive function calls, but this was fixed fairly easily by converting the recursive implementation from Project 3-1 into an iterative one.</p>
 
 		<img src="./images/bsdfn.png" />
 		<figcaption align="center">N-bounce with BSDF</figcaption>
