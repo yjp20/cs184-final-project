@@ -19,7 +19,7 @@
 		aside {
 			position: relative;
 			padding: 16px;
-			width: 125px;
+			width: 175px;
 		}
 
 		aside > nav {
@@ -28,15 +28,20 @@
 			top: 16px;
 		}
 
+		aside > nav > ul > li {
+			margin-bottom: 0.5rem;
+		}
+
+		aside > nav > ul ul {
+			border-left: 1px solid #ccc;
+		}
+
 		aside ul {
 			margin: 0;
 			list-style: none;
-			padding-left: 8px;
+			margin-left: 4px;
+			padding-left: 4px;
 		}
-
-		aside ul ul {
-		}
-
 
 		main {
 			height: max-content;
@@ -58,21 +63,31 @@
 			background-color: #eee;
 		}
 
-		h1, h2, h3 {
+		h1 {
+			margin-top: 6rem;
+		}
+
+		h2,
+		h3 {
 			margin-top: 3rem;
 		}
 
-		h1, h2, h3, h4 {
+		h4 {
+			margin: 1em 0;
+		}
+
+
+		h1,
+		h2,
+		h3,
+		h4 {
 			font-family: "Inter", sans-serif;
 			font-weight: 700;
 		}
 
-		h1 + h2, h2 + h3 {
+		h1 + h2,
+		h2 + h3 {
 			margin-top: 1rem;
-		}
-
-		td {
-			width: 50%;
 		}
 
 		figcaption {
@@ -95,9 +110,27 @@
 					<a href="#final-report">Final Report</a>
 					<ul>
 						<li><a href="#abstract">Abstract</a></li>
-						<li><a href="#ray-marching">Ray Marching</a></li>
-						<li><a href="#rendering">Rendering</a></li>
-						<li><a href="#procedural-terrain">Procedural Terrain</a></li>
+						<li><a href="#technical">Technical approach</a>
+							<ul>
+								<li><a href="#shadertoy">Shadertoy</a></li>
+								<li><a href="#engine">SDF and Intersections</a></li>
+								<li><a href="#rendering">Rendering</a></li>
+								<li><a href="#procedural-terrain">Procedural Terrain</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#results">Results</a>
+							<ul>
+								<li><a href="#result-mandlebulb">Mandlebulb</a></li>
+								<li><a href="#result-softmerge">Soft-merge</a></li>
+								<li><a href="#result-procedural-terrain">Procedural Terrain</a></li>
+								<li><a href="#result-viral">Viral ball</a></li>
+								<li><a href="#result-galaxy">Galaxy</a></li>
+							</ul>
+						</li>
+						<li><a href="#conclusions">Conclusions</a></li>
+						<li><a href="#references">References</a></li>
+						<li><a href="#contributions">Contributions</a></li>
 					</ul>
 				</li>
 				<li>
@@ -124,245 +157,389 @@
 			<p>Xavier Plourde, Eric Zhao, Kenneth Shyle, Young-Jin Park</p>
 		</header>
 
-
-
 		<h1 id="final-report">Final Report</h1>
 		<h2 id="abstract">Abstract</h2>
 
-		<p>Our group worked together to generate images through the use of ray-marching and signed distance functions to create procedurally generated images. Using
-		these techniques we created several artpieces that would be difficult to generate through standard mesh techniques. To demonstrate some of the advantages of
-		SDF rendering techniques, we implemented a relatively basic engine with a Phong and BSDF path-tracing rendering capabilities, alongside a couple of artpieces that
-	  apply SDF techniques.</p>
+		<p>
+			Our group worked on a relatively basic ray-marching engine which utilizes
+			signed distance functions to create procedurally generated images. Our
+			engine supports Phong and BSDF path-tracing rendering capabilities. Using
+			these techniques, we created several artpieces (procedurally generated
+			terrain, mandlebulb fractals, soft-merged objects, etc.) that would be
+			difficult or even impossible to generate with standard mesh scene
+			representations.
+		</p>
 
-		<h2>Ray Marching</h2>
-		<h2>BSDF</h2>
-		<h2>Procedural Terrain</h2>
+		<h2 id="technical">Tecnhical Apporach</h2>
 
-		<p>We wanted to generate an image that would show off the image generating potential of ray-marching we wanted to generate a complicated terrain
-		with numerous crevices and hills that would be difficult to raymarch due to its scale and complexity. This is easily achieved using sdf's as we simply
-		need to provide the distance to the terrain which is trivial when we generate the terrain proceduraly using perlin noise.</p>
+		<h3 id="shadertoy">Shadertoy</h3>
 
-		<p>The terrain generation is done by layering multiple layers of 3D perlin noise on top of each other in a fourier fashion where the process
-		involves taking on layer of perlin noise in 3D, rescaling its domain by a factor of 2 and its range by a factor of 1/2 and combining them
-		in a recursive fashion - Note that we also rotate the layers by a fixed amount to create a sense of randomness found in real terrain.</p>
+		<img src="./images/shadertoy.png" />
+
+		<p>
+			We used the Shadertoy website to develop a GLSL shader program to create
+			a real time raymarching engine. We previously attempted an implementation
+			of this by modifying the pathtracer code, but we realized that that would
+			take longer than we'd like compared to using a much simpler platform to
+			experiment, while being also significantly less performant. Shadertoy
+			exposes a really simple interface and a very fast dev-loop, with
+			compilation being nearly instantaneous and the results being apparent
+			immediately, with relatively simple modes of interaction. This helped
+			immensely in implementing our engine quickly, despite the fact that GLSL
+			is arguably a less ergonomic language to develop in than C++, and that we had
+			to reimplement some of the features of pathtracer.
+		</p>
+		<p>
+			One example of the kind of problems that we had to work through was poor
+			random number generation. Unlike in C++ code, shaders don't have access
+			to random bits. We tried a trig-based random number generation that was
+			not quite good enough, so we found a good hash-based generator that we
+			forward essentially everywhere and mutate for a source of entropy.
+		</p>
+
+		<p>
+		</p>
+
+		<h3 id="engine">SDF and Intersections</h3>
+
+		<img src="./images/sdf.png" width=200 />
+		<figcaption align="center">
+			Image of a 2D circle SDF from Manning Publications
+		</figcaption>
+
+		<p>
+			Our raymarcher is made of a couple of moving parts. First is the SDF, or
+			signed distance function. This function maps some point in 3D space to
+			some value. We consider there to be a surface where ever the value of a
+			certain point is equal to zero. Negative values are inside the surface,
+			and therefore define a volume.
+		</p>
+
+		<p>
+			We defined a couple of these for primitives such as circles and boxes, as
+			well as some combinators. For example, taking the min of a couple of sdfs
+			is equivalent to making an SDF that is the 'merged' SDF of the individual
+			components, kind of like adding shapes together. It's a key component in
+			how we build scenes.
+		</p>
+
+		<p>
+			Interestingly, taking the max does the opposite, and takes the
+			intersection of two objects. You can even take negative of an object to
+			carve out a hole of that shape, which we do in scene3 to create a box with
+			one side open like that in colorbox of pathtracer.
+		</p>
+
+		<img src="./images/raymarching.png" />
+		<figcaption align="center">
+			Image taken from Sebastian Lague's Ray Marching video
+		</figcaption>
+
+		<p>
+			The second part is the raymarching algorithm which finds intersections in
+			the scene. This algorithm is shockingly simple: to find an intersection,
+			we calculate the value of the SDF of the current point in the ray. This
+			gives us the minimum distance that a boundary is at, so we're free to
+			travel that much forward. We can then just move forward by that amount
+			and repeat the process, until we're at a point which is very close to
+			zero, in which case we hit a surface.
+		</p>
+
+		<h3 id="rendering">Rendering</h3>
+
+		<h4>Phong</h4>
+
+		<table>
+			<tr>
+				<td><img src="./images/scene1.png"></td>
+				<td><img src="./images/scene2.png"></td>
+			</tr>
+		</table>
+
+
+		<p>Implementing Phong was fairly simple, since it's something we've already
+		done a couple of times in class.</p>
+
+		<p>
+			One challenge is that we had to numerically calculate the normal for the
+			surface as calculating the derivative of the SDF analytically is
+			difficult. We used the tetrahedron based approach outlined here: <a
+				href="https://iquilezles.org/articles/normalsSDF/"
+			>https://iquilezles.org/articles/normalsSDF/</a>
+		</p>
+
+		<p>Another challenge was displaying multiple materials. SDFs don't
+		inherently return any information about materials, which make it difficult
+		to create colorful images. To get around this, we made SDFs return a
+		<code>vec2</code> instead, where the first value is the distance value, and
+		the second value is the index of the material in our table.</p>
+
+		<h4>1-bounce BSDF</h4>
+
+		<h4>n-bounce BSDF</h4>
+
+		<h3 id="procedural-terrain">Procedural Terrain</h3>
+
+		<p>
+			The terrain generation is done by layering multiple layers of 3D perlin
+			noise on top of each other in a fourier fashion where the process involves
+			taking on layer of perlin noise in 3D, rescaling its domain by a factor of
+			2 and its range by a factor of 1/2 and combining them in a recursive
+			fashion. Note that we also rotate the layers by a fixed amount to create
+			a sense of randomness found in real terrain.
+		</p>
 
 		<p>The terrain generation process can be seen below:</p>
 
 		<div align="middle" style="max-width: 100%">
-			<table width = "800px" align="center">
+			<table width="800px" align="center">
 				<tr align="center">
 					<td>
-						<img src="images/perlin1.png" align="middle" width="200px"/>
+						<img src="images/perlin1.png" align="middle" width="200px" />
 						<figcaption>1 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin2.png" align="middle" width="200px"/>
+						<img src="images/perlin2.png" align="middle" width="200px" />
 						<figcaption>2 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin3.png" align="middle" width="200px"/>
+						<img src="images/perlin3.png" align="middle" width="200px" />
 						<figcaption>3 Layers of Perlin Noise</figcaption>
 					</td>
 				</tr>
 				<tr align="center">
 					<td>
-						<img src="images/perlin4.png" align="middle" width="200px"/>
+						<img src="images/perlin4.png" align="middle" width="200px" />
 						<figcaption>4 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin5.png" align="middle" width="200px"/>
+						<img src="images/perlin5.png" align="middle" width="200px" />
 						<figcaption>5 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin6.png" align="middle" width="200px"/>
+						<img src="images/perlin6.png" align="middle" width="200px" />
 						<figcaption>6 Layers of Perlin Noise</figcaption>
 					</td>
 				</tr>
 				<tr align="center">
 					<td>
-						<img src="images/perlin7.png" align="middle" width="200px"/>
+						<img src="images/perlin7.png" align="middle" width="200px" />
 						<figcaption>7 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin8.png" align="middle" width="200px"/>
+						<img src="images/perlin8.png" align="middle" width="200px" />
 						<figcaption>8 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin9.png" align="middle" width="200px"/>
+						<img src="images/perlin9.png" align="middle" width="200px" />
 						<figcaption>9 Layers of Perlin Noise</figcaption>
 					</td>
 				</tr>
 				<tr align="center">
 					<td>
-						<img src="images/perlin10.png" align="middle" width="200px"/>
+						<img src="images/perlin10.png" align="middle" width="200px" />
 						<figcaption>10 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin11.png" align="middle" width="200px"/>
+						<img src="images/perlin11.png" align="middle" width="200px" />
 						<figcaption>11 Layers of Perlin Noise</figcaption>
 					</td>
 					<td>
-						<img src="images/perlin12.png" align="middle" width="200px"/>
+						<img src="images/perlin12.png" align="middle" width="200px" />
 						<figcaption>12 Layers of Perlin Noise</figcaption>
 					</td>
 				</tr>
 			</table>
 		</div>
 
-		<p>This generates the basic terrain but to implement the grass, we utiilized the angle between the normal of the perlin surface towards the the y axis of the image
-		to determine to what extent to shade the surface more green as grass typically only grows on flatter land. In addition, we added atmospheric bleeding onto the landscape
-		by utilizing the distance from the landscape to the camera position to bleed the color of the light with the actual "real" color of the landscape to give the impression of
-		distance to the scene.</p>
-
-		<img src="./images/atmosphere.png">
-		<figcaption align="center">With atmosphere blending</figcaption>
-
-		<img src="./images/no_atmosphere.png">
-		<figcaption align="center">Without atmosphere blending</figcaption>
-
-		<p>As an extension we intended to add procedurally generated clouds and trees as well - with clouds being implemented in a similar way to the mountains but simply
-		with a different scale and trees being implemented with elipsoids with perlin noise on top of them - however, they strained the renderer too much and thus we omitted these additions.
-		We also did not combine the artpiece with more complicated bsdfs for the same reason.</p>
-
-		<b>Problems:</b>
-		<p>The first issue that we encountered was the fact that we couldn't create a perlin noise layer all at once and had to determine an efficient way to calculate the
-		height of he surface at any point efficiently. As such we decided to use a grid defining the point within space as anchor points to determine the part of the perlin surface
-		we resided on. Then to create the multiple layers, instead of scaling the surface, we scaled the anchor points instead in a "reverse" fashion to backwards calculate the height
-		of the layer we wished to calculate - ie. for layer 2 we took the point rotated it in space and scaled it up by 2 before calculating their anchor points.</p>
-
-		<p>We also had to determine a fine line for the maximum distance for the ray march as otherwise very few of the mountains would be rendered at one time whilst a
-		large tmax meant that the rendering took to long to process. In addition, we had to numerically calculate the normal for the surface as calculating the derivative
-		as it would take too long to calculate it analytically - We used the tetrahedron-based normal estimation as seen here: <a href="https://iquilezles.org/articles/normalsSDF/">https://iquilezles.org/articles/normalsSDF/</a></p>
-
-		<b>Lesons Learned:</b>
-
 		<p>
-		Creating convincing images does not need to be overly complicated as the finer details are hard to spot immediately and often approximations such as perlin noise
-		for the terrain and sky often look convincing enough to pass at the rendering resolution.</p>
-
-		<h2 id="final-artpiece">Artpiece</h2>
-		<h4>Mountainous Landscape</h4>
-		<img src="./images/atmosphere.png">
-
-		<h2 id="contributinos">Contributions</h2>
-		<p>
-		<b>Xavier Plourde</b>:
-		<br><br>
-		<b>Young-Jin Park</b>:
-		<br><br>
-		<b>Eric Zhao</b>:
-		<br><br>
-		<b>Kenneth Shyle</b>: Implemented the bulk of the final artpiece relating to the mountainous scene. Created perlin noise sdf and terrain generation process. Implemented
-		optimizations to the scene to improve realism including atmospheric blending and normal dependent color blending for mountainside.
+			To implement the grass, as grass typically only grows on flatter land, we
+			used the normal of the perlin surface to determine to whether or not to
+			render the grass. In addition, we added atmospheric bleeding to add an
+			illusion of distance.
 		</p>
 
-		<p>This is a budget galaxy scene that we created. The scene is a distance function used in ray marching algorithms for rendering 3D scenes.
-			Several parameters are used to calculate the positions and movements of several orbiting balls in the scene.
-			The position of each orbiting ball is calculated based on the current time and its radius and speed. The distance from the current position to
-			each orbiting ball is then calculated by taking the length of the vector between the current position and the position of the ball.
-			We also have a stationary ball in the center to act as the sun. We choose to emit the light from the center of ball to create shading purposes.
-			At last, the distances to all the balls are combined using the "min2" function to return the minimum distance and the index of the closest ball.</p>
+		<img src="./images/atmosphere.png" />
+		<figcaption align="center">With atmosphere blending</figcaption>
 
-		<div align="center">
-			<table style="width=100%">
-				<tr>
-					<td align="middle">
-						<img src="./images/galaxy1.png"  />
-						<figcaption align="middle">galaxy when first rendered</figcaption>
-					</td>
-				</tr>
-				<tr>
-					<td align="middle">
-						<img src="./images/galaxy2.png"  />
-						<figcaption align="middle">galaxy as time passes by</figcaption>
-					</td>
-				</tr>
-				<tr>
-					<td align="middle">
-						<img src="./images/galaxy3.png"  />
-						<figcaption align="middle">galaxy as time passes more</figcaption>
-					</td>
-				</tr>
-			</table>
-		</div>
+		<img src="./images/no_atmosphere.png" />
+		<figcaption align="center">Without atmosphere blending</figcaption>
 
-		<p>This is a stimulation of a ball spiking as time passes kind of like a virus. Similar to the previous point,
-			the reason why raymarching might be better for this particular scene is that it involves complex mathematical functions,
-			such as sine and cosine functions, to generate the displacement effect. With raymarching, it is easier to integrate these functions
-			into the distance estimation equation, allowing for more efficient rendering.</p>
+		<p>
+			The first issue that we encountered was the fact that we couldn't create a
+			perlin noise layer all at once and had to determine an efficient way to
+			calculate the height of he surface at any point efficiently. As such we
+			decided to use a grid defining the point within space as anchor points to
+			determine the part of the perlin surface we resided on. Then to create the
+			multiple layers, instead of scaling the surface, we scaled the anchor
+			points instead in a "reverse" fashion to backwards calculate the height of
+			the layer we wished to calculate - ie. for layer 2 we took the point
+			rotated it in space and scaled it up by 2 before calculating their anchor
+			points.
+		</p>
 
-		<div align="center">
-			<table style="width=100%">
-				<tr>
-					<td align="middle">
-						<img src="./images/ballspike1.png"  />
-						<figcaption align="middle">spike ball when first rendered</figcaption>
-					</td>
-				</tr>
-				<tr>
-					<td align="middle">
-						<img src="./images/ballspike2.png"  />
-						<figcaption align="middle">ball spiking as time passes</figcaption>
-					</td>
-				</tr>
-				<tr>
-					<td align="middle">
-						<img src="./images/ballspike3.png"  />
-						<figcaption align="middle">ball spiking as time passes more</figcaption>
-					</td>
-				</tr>
-			</table>
-		</div>
+		<h2 id="final-artpiece">Results</h2>
+		<h3 id="result-mandlebulb">Mandlebulb</h3>
+		<h3 id="result-softmerge">Softmerge</h3>
+		<h3 id="result-multibounce">Multibounce BSDF</h3>
+		<h3 id="result-procedural-terrain">Procedural Mountain Terrain</h3>
+
+		<p>See <a href="#procedural-terrain">here</a> for a description of this
+		artpiece.</p>
+
+		<img src="./images/atmosphere.png" />
+
+		<h3 id="result-viral">Viral ball</h3>
+
+		<p>
+			This is a stimulation of a ball spiking as time passes kind of like a
+			virus. We used simple trig operations to generate the displacement
+			effect. With SDFs, it was super simple to describe these displacements
+			and even animate them, but this would be quite challenging to do with
+			meshes in a fast manner.
+		</p>
+
+		<h3 id="result-galaxy">Galaxy</h3>
+		<img src="./images/galaxy1.png" />
+
+
+		<h2 id="conclusions">Conclusions</h2>
+
+		<p>LESSONS</p>
+
+		<h2 id="references">References</h2>
+		<ul>
+			<li><a href="https://jamie-wong.com/2016/07/15/ray-marching-signed-distance-functions/" >Ray Marching and Signed Distance Functions</a></li>
+			<li><a href="https://www.youtube.com/watch?v=BFld4EBO2RE">Painting a Landscape with Maths</a></li>
+			<li><a href="https://www.youtube.com/watch?v=Cp5WWtMoeKg">Coding Adventure: Ray Marching</a></li>
+			<li><a href="https://digitalfreepen.com/2017/06/23/fast-mostly-consistent.html">Fast and mostly consistent distance field ray marching</a></li>
+		</ul>
 
 
 
+		<h2 id="contributions">Contributions</h2>
+		<p>
+			<b>Xavier Plourde</b>: Implemented rendering of BSDFs, especially multi-bounce BSDFs.
+		</p>
 
+		<p>
+			<b>Young-Jin Park</b>: Implemented most of the engine, including SDFs, raycasting, intersections, camera, materials, Phong, and some scenes.
+		</p>
 
+		<p>
+			<b>Eric Zhao</b>: Implemented the galaxy and spiking ball scene. Imitated sunlight lighting on rotating balls. Experimented with other small scenes that didn't make to presentation/wesbite.</p>
+		</p>
 
-
-
+		<p>
+			<b>Kenneth Shyle</b>: Implemented the bulk of the final artpiece relating
+			to the mountainous scene. Created perlin noise sdf and terrain generation
+			process. Implemented optimizations to the scene to improve realism
+			including atmospheric blending and normal dependent color blending for
+			mountainside.
+		</p>
 
 		<h1 id="milestone">Milestone</h1>
-		<a href="https://www.shadertoy.com/view/mltGDr">https://www.shadertoy.com/view/mltGDr</a>
+		<a href="https://www.shadertoy.com/view/mltGDr"
+			>https://www.shadertoy.com/view/mltGDr</a
+		>
 
-		<img src="./images/shadertoy.png" style="max-width: 100%">
+		<img src="./images/shadertoy.png" style="max-width: 100%" />
 
-		<p>So far, we have used the Shadertoy website to develop a GLSL shader program to create a parallelized, real time raymarching engine. We attempted an implementation of this by modifying the pathtracer code, but we realized that that would take longer than we'd like compared to using a much simpler platform to experiment, while being also significantly less performant. Shadertoy exposes a really simple interface and a very fast dev-loop, with compilation being nearly instantaneous and the results being apparent immediately, with relatively simple modes of interaction. This helped immensely in implementing our engine quickly, despite the fact that GLSL is arguably a less ergonomic language to develop in than C++.</p>
+		<p>
+			So far, we have used the Shadertoy website to develop a GLSL shader
+			program to create a parallelized, real time raymarching engine. We
+			attempted an implementation of this by modifying the pathtracer code, but
+			we realized that that would take longer than we'd like compared to using a
+			much simpler platform to experiment, while being also significantly less
+			performant. Shadertoy exposes a really simple interface and a very fast
+			dev-loop, with compilation being nearly instantaneous and the results
+			being apparent immediately, with relatively simple modes of interaction.
+			This helped immensely in implementing our engine quickly, despite the fact
+			that GLSL is arguably a less ergonomic language to develop in than C++.
+		</p>
 
 		<h2 id="milestone-accomplishments">Accomplishments</h2>
 
-		<img src="./images/scene1-normal.png">
+		<img src="./images/scene1-normal.png" />
 		<figcaption align="center">Normal rendering of scene1</figcaption>
 
-		<p>Our raymarcher is made of a couple of moving parts. First is the SDF, or signed distance function. This function maps some point in 3D space to some value. We consider there to be a surface where ever the value of a certain point is equal to zero. We defined a couple of these for primitives such as circles and boxes, as well as some combinators. For example, taking the min of a couple of sdfs is equivalent to making an SDF that is the 'merged' SDF of the individual components, kind of like adding shapes together. It's a key component in how we build scenes.</p>
+		<p>
+			Our raymarcher is made of a couple of moving parts. First is the SDF, or
+			signed distance function. This function maps some point in 3D space to
+			some value. We consider there to be a surface where ever the value of a
+			certain point is equal to zero. We defined a couple of these for
+			primitives such as circles and boxes, as well as some combinators. For
+			example, taking the min of a couple of sdfs is equivalent to making an SDF
+			that is the 'merged' SDF of the individual components, kind of like adding
+			shapes together. It's a key component in how we build scenes.
+		</p>
 
-		<p>Interestingly, taking the max does the opposite, and takes the intersection of two objects. You can even take negative of an object to carve out a hole of that shape, which we do in scene3 to create a box with one side open like that in colorbox of pathtracer.</p>
+		<p>
+			Interestingly, taking the max does the opposite, and takes the
+			intersection of two objects. You can even take negative of an object to
+			carve out a hole of that shape, which we do in scene3 to create a box with
+			one side open like that in colorbox of pathtracer.
+		</p>
 
-		<img src="./images/raymarching.png">
-		<figcaption align="center">Image taken from Sebastian Lague's Ray Marching video</figcaption>
+		<img src="./images/raymarching.png" />
+		<figcaption align="center">
+			Image taken from Sebastian Lague's Ray Marching video
+		</figcaption>
 
-		<p>The second part is the actual raymarching algorithm itself, which is shockingly simple. To find an intersection, we calculate the value of the SDF of the current point in the ray. This gives us the minimum distance that a boundary is at, so we're free to travel that much forward. We can then just move forward by that amount and repeat the process, until we're at a point which is very close to zero, in which case we hit a surface.</p>
+		<p>
+			The second part is the actual raymarching algorithm itself, which is
+			shockingly simple. To find an intersection, we calculate the value of the
+			SDF of the current point in the ray. This gives us the minimum distance
+			that a boundary is at, so we're free to travel that much forward. We can
+			then just move forward by that amount and repeat the process, until we're
+			at a point which is very close to zero, in which case we hit a surface.
+		</p>
 
-		<img src="./images/scene1.png">
+		<img src="./images/scene1.png" />
 		<figcaption align="center">Phong rendering of scene1</figcaption>
 
-		<img src="./images/scene3.png">
+		<img src="./images/scene3.png" />
 		<figcaption align="center">BSDF 1-bounce rendering of scene3</figcaption>
 
-		<p>Finally, we have the different lighting systems, such and Phong, BSDFs with one bounce, and BSDFs with mutlibounce raytracing. We also implemented a buffer layer which collects data over multiple frames, which reduces noise significantly for scene3. Much of this is very similar to what we implemented in pathtracer.</p>
+		<p>
+			Finally, we have the different lighting systems, such and Phong, BSDFs
+			with one bounce, and BSDFs with mutlibounce raytracing. We also
+			implemented a buffer layer which collects data over multiple frames, which
+			reduces noise significantly for scene3. Much of this is very similar to
+			what we implemented in pathtracer.
+		</p>
 
-		<img src="./images/scene2.png">
+		<img src="./images/scene2.png" />
 		<figcaption align="center">Phong rendering of scene2</figcaption>
 
-		<p>What we found really interesting and powerful was applications like softmerge, in which we were able to display much more organic shapes very easily. An image like the one above would be far more difficult to create in a meshed-based representation of the scene, involving a lot of geometry and ingenuity, but it's trivial to do in SDFs in a manner that's far more robust as well.<p>
+		<p>
+			What we found really interesting and powerful was applications like
+			softmerge, in which we were able to display much more organic shapes very
+			easily. An image like the one above would be far more difficult to create
+			in a meshed-based representation of the scene, involving a lot of geometry
+			and ingenuity, but it's trivial to do in SDFs in a manner that's far more
+			robust as well.
+		</p>
+		<p>
+			<img src="./images/scenemandlebrot.png" />
+			<figcaption align="center">Phong rendering of scenemandlebrot</figcaption>
+		</p>
 
-		<img src="./images/scenemandlebrot.png">
-		<figcaption align="center">Phong rendering of scenemandlebrot</figcaption>
-
-		<p>It gets even crazier when we talk about rendering this like fractals. This rendering of the mandlebrot set would be incredibly difficult to do without SDFs.
+		<p>
+			It gets even crazier when we talk about rendering this like fractals. This
+			rendering of the mandlebrot set would be incredibly difficult to do
+			without SDFs.
+		</p>
 
 		<h2 id="milestone-timeline">Timeline</h2>
-		<p>After our work, we decided that it was probably not hugely important to implement optimizations, and instead explore more into what makes raymarching and SDFs so powerful. This involves creating creative scenes with math, implementing more shaders and art primitives for interseting visual effects. Thankfully, we're not behind schedule, and got most of what we wanted to get done at this point finished.</p>
+		<p>
+			After our work, we decided that it was probably not hugely important to
+			implement optimizations, and instead explore more into what makes
+			raymarching and SDFs so powerful. This involves creating creative scenes
+			with math, implementing more shaders and art primitives for interseting
+			visual effects. Thankfully, we're not behind schedule, and got most of
+			what we wanted to get done at this point finished.
+		</p>
 
 		<p>Apr. 21th: Basic raymarching intersection (Young-Jin)</p>
 		<p>Apr. 24th: Colors, BSDFs (Xavier)</p>
@@ -371,18 +548,27 @@
 
 		<h2 id="milestone-presentation">Presentation</h2>
 
-		<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSBo4z2teGJ7RJwBCO2iVcYttrLiiP8dLLHMBgvz23c6b3Pj5yr2E0o_eVH2ZaASMDDXRRHkncMD7z5/embed?start=false&loop=false&delayms=60000" frameborder="0" width="800" height="500" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+		<iframe
+			src="https://docs.google.com/presentation/d/e/2PACX-1vSBo4z2teGJ7RJwBCO2iVcYttrLiiP8dLLHMBgvz23c6b3Pj5yr2E0o_eVH2ZaASMDDXRRHkncMD7z5/embed?start=false&loop=false&delayms=60000"
+			frameborder="0"
+			width="800"
+			height="500"
+			allowfullscreen="true"
+			mozallowfullscreen="true"
+			webkitallowfullscreen="true"
+		></iframe>
 
 		<h2 id="milestone-video">Video</h2>
 
-		<iframe width="560" height="315" src="https://www.youtube.com/embed/xLE7Pvitaws" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
-
-
-
-
-
-
+		<iframe
+			width="560"
+			height="315"
+			src="https://www.youtube.com/embed/xLE7Pvitaws"
+			title="YouTube video player"
+			frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+			allowfullscreen
+		></iframe>
 
 		<h1 id="proposal">Proposal</h1>
 
@@ -440,6 +626,5 @@
 		<p>Apr. 24th: Colors, BSDFs (Xavier)</p>
 		<p>Apr. 27th: Optimizations</p>
 		<p>May 1st: Artpiece</p>
-
 	</main>
 </body>
